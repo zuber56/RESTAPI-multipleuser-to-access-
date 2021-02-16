@@ -1,15 +1,11 @@
 const mongoose = require('mongoose')
-//const bcrypt = require('bcryptjs')
-//const bcrypt=require('bcrypt')
 const jwt = require('jsonwebtoken')
+//const bcrypt=require('bcrypt')
+//const jwt = require('jsonwebtoken')
+//const bcrypt = require('bcryptjs')
 
 const Schema = mongoose.Schema;
-
-//const bcrypt = require('bcryptjs')
-//const jwt = require('jsonwebtoken')
-
 const userSchema = new mongoose.Schema({
-    //_id:Schema.Types.ObjectId,
     name:{
         type: String,
     },
@@ -20,16 +16,32 @@ const userSchema = new mongoose.Schema({
         type:String,
     },image:{
         type:String,
-    }
-    ,tokens: [{
-        token: {
+    },
+    userpost:{
+        type:Array
+    },  
+    followers: [
+        {
+        request_by: {
+            type:mongoose.Types.ObjectId,
+            ref: "user",
+          },
+          accept: 0,
+    }],
+    following: [
+        {
+        request_by: {
+            type: mongoose.Types.ObjectId,
+            ref: "user",
+          },
+          accept: 0,
+    }]
+    ,tokens:[{
+        token:{
             type: String,
         }
     }],
 })
-
-
-
 userSchema.methods.generateAuthToken = async function () {
     const user = this
     const token = jwt.sign({ _id: user._id.toString() }, 'thisismynewcourse')
@@ -37,15 +49,9 @@ userSchema.methods.generateAuthToken = async function () {
     await user.save()
     return token
 }
-
 //--------------------------------------------
 const User = mongoose.model('User', userSchema)
 module.exports = User
 
 
 
-
-// module.exports = {
-//     'Author': require('./Author'),
-//     'Book': require('./Book'),
-//   };

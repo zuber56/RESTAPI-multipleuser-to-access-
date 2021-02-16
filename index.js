@@ -17,7 +17,6 @@ mongoose.connect(MONGOURI,{
     useFindAndModify:false,
     useNewUrlParser:true,
     useUnifiedTopology:true,
-    NativeTopology:false
     
 }).then(() => console.log("connected to mongodb")).catch((err) => console.log(err))
 
